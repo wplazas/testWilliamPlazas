@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="RecorteViewPage" lazy="true">
+        <pm:header title="#{myBundle.ViewRecorteTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:RecorteListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="RecorteViewForm">
+
+                <h:panelGroup id="display">
+                    <p:outputPanel rendered="#{recorteController.selected != null}">
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewRecorteLabel_id}"/>
+                            <h:outputText value="#{recorteController.selected.id}" title="#{myBundle.ViewRecorteTitle_id}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewRecorteLabel_ruta}"/>
+                            <h:outputText value="#{recorteController.selected.ruta}" title="#{myBundle.ViewRecorteTitle_ruta}"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewRecorteLabel_fechahoracrea}"/>
+                            <h:outputText value="#{recorteController.selected.fechahoracrea}" title="#{myBundle.ViewRecorteTitle_fechahoracrea}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewRecorteLabel_fhoramodifica}"/>
+                            <h:outputText value="#{recorteController.selected.fhoramodifica}" title="#{myBundle.ViewRecorteTitle_fhoramodifica}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </pm:field>
+
+                        <pm:field>
+                            <h:outputText value="#{myBundle.ViewRecorteLabel_iddocumento}"/>
+                            <h:outputText value="#{recorteController.selected.iddocumento.id}"/>
+                        </pm:field>
+                    </p:outputPanel>
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

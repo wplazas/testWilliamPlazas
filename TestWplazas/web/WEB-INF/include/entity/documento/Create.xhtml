@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentoCreateDlg" widgetVar="DocumentoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{myBundle.CreateDocumentoTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentoCreateForm">
+
+                <h:panelGroup id="display" rendered="#{documentoController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{myBundle.CreateDocumentoLabel_ruta}" for="ruta" />
+                        <p:inputText id="ruta" value="#{documentoController.selected.ruta}" title="#{myBundle.CreateDocumentoTitle_ruta}" size="60" maxlength="60"/>
+
+                        <p:outputLabel value="#{myBundle.CreateDocumentoLabel_fechahoracrea}" for="fechahoracrea" />
+                        <p:calendar id="fechahoracrea" pattern="MM/dd/yyyy HH:mm:ss" value="#{documentoController.selected.fechahoracrea}" title="#{myBundle.CreateDocumentoTitle_fechahoracrea}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.CreateDocumentoLabel_fhoramodifica}" for="fhoramodifica" />
+                        <p:calendar id="fhoramodifica" pattern="MM/dd/yyyy HH:mm:ss" value="#{documentoController.selected.fhoramodifica}" title="#{myBundle.CreateDocumentoTitle_fhoramodifica}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.CreateDocumentoLabel_idformato}" for="idformato" />
+                        <p:selectOneMenu id="idformato" value="#{documentoController.selected.idformato}" required="true" requiredMessage="#{myBundle.CreateDocumentoRequiredMessage_idformato}" converter="formatoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{formatoController.items}"
+                                           var="idformatoItem"
+                                           itemValue="#{idformatoItem}"
+                                           itemLabel="#{idformatoItem.id.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{documentoController.saveNew}" value="#{myBundle.Save}" update="display,:DocumentoListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('DocumentoCreateDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('DocumentoCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pm="http://primefaces.org/mobile">
+
+    <pm:page id="DocumentoCreatePage" lazy="true">
+        <pm:header title="#{myBundle.CreateDocumentoTitle}">
+            <h:form>
+                <p:commandButton styleClass="ui-btn-left ui-btn-inline" value="#{myBundle.Cancel}" icon="ui-icon-arrow-l" action="#{mobilePageController.navigateBackInHistory('pm:DocumentoListPage')}"/>
+            </h:form>
+        </pm:header>
+
+        <pm:content>
+
+            <h:form id="DocumentoCreateForm">
+
+                <h:panelGroup id="display" rendered="#{documentoController.selected != null}">
+                    <p:outputPanel>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDocumentoLabel_ruta}" for="ruta" />
+                            <p:inputText id="ruta" value="#{documentoController.selected.ruta}" title="#{myBundle.CreateDocumentoTitle_ruta}" size="60" maxlength="60"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDocumentoLabel_fechahoracrea}" for="fechahoracrea" />
+                            <p:calendar id="fechahoracrea" pattern="MM/dd/yyyy HH:mm:ss" value="#{documentoController.selected.fechahoracrea}" title="#{myBundle.CreateDocumentoTitle_fechahoracrea}"  showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDocumentoLabel_fhoramodifica}" for="fhoramodifica" />
+                            <p:calendar id="fhoramodifica" pattern="MM/dd/yyyy HH:mm:ss" value="#{documentoController.selected.fhoramodifica}" title="#{myBundle.CreateDocumentoTitle_fhoramodifica}"  showOn="button"/>
+                        </pm:field>
+
+                        <pm:field>
+                            <p:outputLabel value="#{myBundle.CreateDocumentoLabel_idformato}" for="idformato" />
+                            <p:selectOneMenu id="idformato" value="#{documentoController.selected.idformato}" required="true" requiredMessage="#{myBundle.CreateDocumentoRequiredMessage_idformato}" converter="formatoConverter">
+                                <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                                <f:selectItems value="#{formatoController.items}"
+                                               var="idformatoItem"
+                                               itemValue="#{idformatoItem}"
+                                               itemLabel="#{idformatoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </pm:field>
+                    </p:outputPanel>
+                    <p:commandButton actionListener="#{documentoController.saveNew}" value="#{myBundle.Save}" update="display,:DocumentoListPage:DocumentoListForm:datalist,:growl" action="#{mobilePageController.navigateWithHistory('pm:DocumentoListPage')}"/>
+
+                </h:panelGroup>
+
+            </h:form>
+
+        </pm:content>
+
+    </pm:page>
+
+</ui:composition>

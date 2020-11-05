@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="RecorteViewDlg" widgetVar="RecorteViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.ViewRecorteTitle}" closeOnEscape="true">
+
+            <h:form id="RecorteViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{recorteController.selected != null}">
+
+                        <h:outputText value="#{myBundle.ViewRecorteLabel_id}"/>
+                        <h:outputText value="#{recorteController.selected.id}" title="#{myBundle.ViewRecorteTitle_id}"/>
+
+                        <h:outputText value="#{myBundle.ViewRecorteLabel_ruta}"/>
+                        <h:outputText value="#{recorteController.selected.ruta}" title="#{myBundle.ViewRecorteTitle_ruta}"/>
+
+                        <h:outputText value="#{myBundle.ViewRecorteLabel_fechahoracrea}"/>
+                        <h:outputText value="#{recorteController.selected.fechahoracrea}" title="#{myBundle.ViewRecorteTitle_fechahoracrea}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{myBundle.ViewRecorteLabel_fhoramodifica}"/>
+                        <h:outputText value="#{recorteController.selected.fhoramodifica}" title="#{myBundle.ViewRecorteTitle_fhoramodifica}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{myBundle.ViewRecorteLabel_iddocumento}"/>
+                        <h:outputText value="#{recorteController.selected.iddocumento.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{myBundle.Close}" onclick="PF('RecorteViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

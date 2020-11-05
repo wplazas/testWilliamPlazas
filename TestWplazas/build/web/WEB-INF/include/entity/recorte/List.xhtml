@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="RecorteListForm">
+
+        <p:panel header="#{myBundle.ListRecorteTitle}">
+            <p:contextMenu id="RecorteDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{myBundle.Create}" onclick="document.getElementById('RecorteListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{myBundle.View}" onclick="document.getElementById('RecorteListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{myBundle.Edit}" onclick="document.getElementById('RecorteListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{myBundle.Delete}" onclick="document.getElementById('RecorteListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{myBundle.RecorteMenuItem_iddocumento}" icon="ui-icon-search"  actionListener="#{recorteController.prepareIddocumento}" update=":DocumentoViewForm" oncomplete="PF('DocumentoViewDialog').show()" disabled="#{empty recorteController.selected.iddocumento}"/>  
+            </p:contextMenu>
+            <p:dataTable id="datalist"
+                         value="#{recorteController.items}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{recorteController.selected}"
+                         filteredValue="#{recorteController.filteredItems}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{recorteController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:RecorteDataTableContextMenu" listener="#{recorteController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton,@form:RecorteDataTableContextMenu" listener="#{recorteController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:createButton @form:viewButton @form:editButton @form:deleteButton" listener="#{recorteController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('RecorteListForm:viewButton').click();"/>
+
+                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRecorteTitle_id}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.ruta}" filterBy="#{item.ruta}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRecorteTitle_ruta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ruta}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.fechahoracrea}" filterBy="#{item.fechahoracrea}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRecorteTitle_fechahoracrea}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechahoracrea}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                </p:column>
+
+
+                <p:column sortBy="#{item.fhoramodifica}" filterBy="#{item.fhoramodifica}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRecorteTitle_fhoramodifica}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fhoramodifica}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                </p:column>
+
+
+                <p:column sortBy="#{item.iddocumento.id}" filterBy="#{item.iddocumento.id}">
+                    <f:facet name="header">
+                        <h:outputText value="#{myBundle.ListRecorteTitle_iddocumento}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.iddocumento.id}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{myBundle.Create}" actionListener="#{recorteController.prepareCreate}" update=":RecorteCreateForm" oncomplete="PF('RecorteCreateDialog').show()"/>
+            <p:commandButton id="viewButton"   style="visibility: hidden;" icon="ui-icon-search" value="#{myBundle.View}" update=":RecorteViewForm" oncomplete="PF('RecorteViewDialog').show()" disabled="#{empty recorteController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: hidden;" icon="ui-icon-pencil" value="#{myBundle.Edit}" update=":RecorteEditForm" oncomplete="PF('RecorteEditDialog').show()" disabled="#{empty recorteController.selected}"/>
+            <p:commandButton id="deleteButton" style="visibility: hidden;" icon="ui-icon-trash"  value="#{myBundle.Delete}" actionListener="#{recorteController.delete}" update=":growl,datalist" disabled="#{empty recorteController.selected}">
+                <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+
+        </p:panel>
+        <ui:include src="/WEB-INF/include/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

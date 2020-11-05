@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="RecorteEditDlg" widgetVar="RecorteEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{myBundle.EditRecorteTitle}" closeOnEscape="true">
+
+            <h:form id="RecorteEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{recorteController.selected != null}">
+
+
+                        <h:outputLabel value="#{myBundle.EditRecorteLabel_id}" for="id" />
+                        <h:outputText id="id" value="#{recorteController.selected.id}" />
+
+                        <p:outputLabel value="#{myBundle.EditRecorteLabel_ruta}" for="ruta" />
+                        <p:inputText id="ruta" value="#{recorteController.selected.ruta}" title="#{myBundle.EditRecorteTitle_ruta}" size="60" maxlength="60"/>
+
+                        <p:outputLabel value="#{myBundle.EditRecorteLabel_fechahoracrea}" for="fechahoracrea" />
+                        <p:calendar id="fechahoracrea" pattern="MM/dd/yyyy HH:mm:ss" value="#{recorteController.selected.fechahoracrea}" title="#{myBundle.EditRecorteTitle_fechahoracrea}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditRecorteLabel_fhoramodifica}" for="fhoramodifica" />
+                        <p:calendar id="fhoramodifica" pattern="MM/dd/yyyy HH:mm:ss" value="#{recorteController.selected.fhoramodifica}" title="#{myBundle.EditRecorteTitle_fhoramodifica}"  showOn="button"/>
+
+                        <p:outputLabel value="#{myBundle.EditRecorteLabel_iddocumento}" for="iddocumento" />
+                        <p:selectOneMenu id="iddocumento" value="#{recorteController.selected.iddocumento}" required="true" requiredMessage="#{myBundle.EditRecorteRequiredMessage_iddocumento}" converter="documentoConverter">
+                            <f:selectItem itemLabel="#{myBundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{documentoController.items}"
+                                           var="iddocumentoItem"
+                                           itemValue="#{iddocumentoItem}"
+                                           itemLabel="#{iddocumentoItem.id.toString()}"
+                                           />
+
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{recorteController.save}" value="#{myBundle.Save}" update="display,:RecorteListForm:datalist,:RecorteListForm:RecorteDataTableContextMenu,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RecorteEditDialog'));">
+                        <p:confirm header="#{myBundle.ConfirmationHeader}" message="#{myBundle.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{myBundle.Cancel}" oncomplete="PF('RecorteEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
